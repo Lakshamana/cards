@@ -4,7 +4,7 @@ defmodule Cards do
   """
 
   @doc """
-  Hello world.
+  Returns a list of card values.
 
   """
   def get_cards do
@@ -29,7 +29,24 @@ defmodule Cards do
     end
   end
 
-  def contains(deck, card), do: card in deck
+  def contains?(deck, card), do: Enum.member?(deck, card)
 
   def create_deck(n \\ 9), do: create_deck_r([], n)
+
+  def deal(deck, size) do
+    { hand, rest } = Enum.split(deck, size)
+
+    %{ hand: hand, rest: rest }
+  end
+
+  def save(deck, filename \\ "./fixtures/deck.txt") do
+    File.write(Path.expand(filename), :erlang.term_to_binary(deck))
+  end
+
+  def load(filename \\ "./fixtures/deck.txt") do
+    case File.read(filename) do
+      {:ok, binary} -> :erlang.binary_to_term binary
+      {:error, reason} -> "Error on loading deck: #{inspect reason}"
+    end
+  end
 end
