@@ -46,7 +46,7 @@ defmodule Cards do
   def load(filename \\ "./fixtures/deck.txt") do
     case File.read(filename) do
       {:ok, binary} -> :erlang.binary_to_term binary
-      {:error, reason} -> "Error on loading deck: #{inspect reason}"
+      {:error, _reason} -> "This file doesn't exist"
     end
   end
 end
