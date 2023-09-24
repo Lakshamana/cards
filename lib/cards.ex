@@ -31,7 +31,7 @@ defmodule Cards do
 
   def contains?(deck, card), do: Enum.member?(deck, card)
 
-  def create_deck(n \\ 9), do: create_deck_r([], n)
+  def create_deck(n \\ 18), do: create_deck_r([], n)
 
   def deal(deck, size) do
     { hand, rest } = Enum.split(deck, size)
@@ -48,5 +48,9 @@ defmodule Cards do
       {:ok, binary} -> :erlang.binary_to_term binary
       {:error, _reason} -> "This file doesn't exist"
     end
+  end
+
+  def create_hand(hand_size \\ 9) do
+    Cards.create_deck |> Cards.deal(hand_size)
   end
 end
