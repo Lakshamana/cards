@@ -19,7 +19,7 @@ defmodule Cards do
     ["Spades", "Hearts", "Clubs", "Diamonds"]
   end
 
-  defp create_deck_r(_, 0), do: []
+  defp create_deck_r(l, n) when n == 0, do: l
 
   defp create_deck_r(l, n) do
     choice = {
@@ -27,9 +27,9 @@ defmodule Cards do
       hd(Enum.shuffle(get_values()))
     }
 
-    case Enum.member?(l, choice) do
+    case contains?(l, choice) do
       true -> create_deck_r(l, n)
-      _ -> [choice | create_deck_r(l, n - 1)]
+      _ -> create_deck_r([choice | l], n - 1)
     end
   end
 
@@ -65,27 +65,28 @@ defmodule Cards do
       iex> deck = Cards.create_deck
       iex> deck
       [
-        {"Hearts", "King"},
-        {"Spades", "Seven"},
-        {"Hearts", "Ace"},
-        {"Clubs", "Four"},
-        {"Diamonds", "King"},
-        {"Spades", "Ten"},
-        {"Hearts", "Ace"},
-        {"Diamonds", "Seven"},
-        {"Clubs", "Queen"},
-        {"Spades", "Five"},
-        {"Clubs", "Seven"},
-        {"Hearts", "King"},
-        {"Spades", "Queen"},
-        {"Hearts", "Five"},
-        {"Diamonds", "Eight"},
+        {"Hearts", "Nine"},
+        {"Clubs", "Five"},
+        {"Diamonds", "Jack"},
+        {"Hearts", "Eight"},
         {"Diamonds", "Six"},
+        {"Diamonds", "Eight"},
+        {"Hearts", "Five"},
+        {"Spades", "Queen"},
+        {"Clubs", "Seven"},
+        {"Spades", "Five"},
+        {"Clubs", "Queen"},
+        {"Diamonds", "Seven"},
+        {"Spades", "Ten"},
+        {"Diamonds", "King"},
+        {"Clubs", "Four"},
         {"Hearts", "Ace"},
-        {"Hearts", "Eight"}
+        {"Spades", "Seven"},
+        {"Hearts", "King"}
       ]
   """
   @spec create_deck(integer) :: [{String.t, String.t}]
+    
   def create_deck(n \\ 18), do: create_deck_r([], n)
 
   @doc """
@@ -103,15 +104,15 @@ defmodule Cards do
       iex> { hand, _ } = Cards.deal(deck, 9)
       iex> hand
       [
-        {"Hearts", "King"},
-        {"Spades", "Seven"},
-        {"Hearts", "Ace"},
-        {"Clubs", "Four"},
-        {"Diamonds", "King"},
-        {"Spades", "Ten"},
-        {"Hearts", "Ace"},
-        {"Diamonds", "Seven"},
-        {"Clubs", "Queen"}
+        {"Hearts", "Nine"},
+        {"Clubs", "Five"},
+        {"Diamonds", "Jack"},
+        {"Hearts", "Eight"},
+        {"Diamonds", "Six"},
+        {"Diamonds", "Eight"},
+        {"Hearts", "Five"},
+        {"Spades", "Queen"},
+        {"Clubs", "Seven"}
       ]
   """
   @spec deal([{String.t, String.t}], integer) :: { [{String.t, String.t}], [{String.t, String.t}] }
@@ -148,24 +149,24 @@ defmodule Cards do
 
       iex> Cards.load("./fixtures/deck.txt")
       [
-        {"Hearts", "King"},
-        {"Spades", "Seven"},
-        {"Hearts", "Ace"},
-        {"Clubs", "Four"},
-        {"Diamonds", "King"},
-        {"Spades", "Ten"},
-        {"Hearts", "Ace"},
-        {"Diamonds", "Seven"},
-        {"Clubs", "Queen"},
-        {"Spades", "Five"},
-        {"Clubs", "Seven"},
-        {"Hearts", "King"},
-        {"Spades", "Queen"},
-        {"Hearts", "Five"},
-        {"Diamonds", "Eight"},
+        {"Hearts", "Nine"},
+        {"Clubs", "Five"},
+        {"Diamonds", "Jack"},
+        {"Hearts", "Eight"},
         {"Diamonds", "Six"},
+        {"Diamonds", "Eight"},
+        {"Hearts", "Five"},
+        {"Spades", "Queen"},
+        {"Clubs", "Seven"},
+        {"Spades", "Five"},
+        {"Clubs", "Queen"},
+        {"Diamonds", "Seven"},
+        {"Spades", "Ten"},
+        {"Diamonds", "King"},
+        {"Clubs", "Four"},
         {"Hearts", "Ace"},
-        {"Hearts", "Eight"}
+        {"Spades", "Seven"},
+        {"Hearts", "King"}
       ]
 
       # If file doesn't exist:
@@ -196,15 +197,15 @@ defmodule Cards do
       iex> {hand, _} = Cards.create_hand()
       iex> hand
       [
-        {"Hearts", "King"},
-        {"Spades", "Seven"},
-        {"Hearts", "Ace"},
-        {"Clubs", "Four"},
-        {"Diamonds", "King"},
-        {"Spades", "Ten"},
-        {"Hearts", "Ace"},
-        {"Diamonds", "Seven"},
-        {"Clubs", "Queen"}
+        {"Hearts", "Nine"},
+        {"Clubs", "Five"},
+        {"Diamonds", "Jack"},
+        {"Hearts", "Eight"},
+        {"Diamonds", "Six"},
+        {"Diamonds", "Eight"},
+        {"Hearts", "Five"},
+        {"Spades", "Queen"},
+        {"Clubs", "Seven"}
       ]
   """
   @spec create_hand(integer) :: { [{String.t, String.t}], [{String.t, String.t}] }
