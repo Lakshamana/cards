@@ -6,7 +6,7 @@ defmodule Cards do
   @doc """
   Returns a list of card values.
   """
-  @spec get_values() :: [String.t]
+  @spec get_values() :: [String.t()]
   def get_values do
     ["Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King"]
   end
@@ -14,7 +14,7 @@ defmodule Cards do
   @doc """
   Returns a list of card suits.
   """
-  @spec get_suits() :: [String.t]
+  @spec get_suits() :: [String.t()]
   def get_suits do
     ["Spades", "Hearts", "Clubs", "Diamonds"]
   end
@@ -33,7 +33,6 @@ defmodule Cards do
     end
   end
 
-
   @doc """
   Returns true if the deck contains the card, false otherwise.
 
@@ -49,7 +48,7 @@ defmodule Cards do
       iex> Cards.contains?(deck, {"Hearts", "Eight"})
       true
   """
-  @spec contains?([{String.t, String.t}], {String.t, String.t}) :: boolean
+  @spec contains?([{String.t(), String.t()}], {String.t(), String.t()}) :: boolean
   def contains?(deck, card), do: Enum.member?(deck, card)
 
   @doc """
@@ -85,8 +84,8 @@ defmodule Cards do
         {"Hearts", "King"}
       ]
   """
-  @spec create_deck(integer) :: [{String.t, String.t}]
-    
+  @spec create_deck(integer) :: [{String.t(), String.t()}]
+
   def create_deck(n \\ 18), do: create_deck_r([], n)
 
   @doc """
@@ -115,7 +114,8 @@ defmodule Cards do
         {"Clubs", "Seven"}
       ]
   """
-  @spec deal([{String.t, String.t}], integer) :: { [{String.t, String.t}], [{String.t, String.t}] }
+  @spec deal([{String.t(), String.t()}], integer) ::
+          {[{String.t(), String.t()}], [{String.t(), String.t()}]}
   def deal(deck, size), do: Enum.split(deck, size)
 
   @doc """
@@ -133,7 +133,7 @@ defmodule Cards do
       iex> Cards.save(deck)
       :ok
   """
-  @spec save([{String.t, String.t}], String.t) :: :ok
+  @spec save([{String.t(), String.t()}], String.t()) :: :ok
   def save(deck, filename \\ "./fixtures/deck.txt") do
     File.write(Path.expand(filename), :erlang.term_to_binary(deck))
   end
@@ -174,10 +174,10 @@ defmodule Cards do
       iex> Cards.load("path/to/file/that/doesnt/exist")
       "This file doesn't exist"
   """
-  @spec load(String.t) :: [{String.t, String.t}] | String.t
+  @spec load(String.t()) :: [{String.t(), String.t()}] | String.t()
   def load(filename \\ "./fixtures/deck.txt") do
     case File.read(filename) do
-      {:ok, binary} -> :erlang.binary_to_term binary
+      {:ok, binary} -> :erlang.binary_to_term(binary)
       {:error, _reason} -> "This file doesn't exist"
     end
   end
@@ -208,6 +208,6 @@ defmodule Cards do
         {"Clubs", "Seven"}
       ]
   """
-  @spec create_hand(integer) :: { [{String.t, String.t}], [{String.t, String.t}] }
-  def create_hand(hand_size \\ 9), do: Cards.create_deck |> Cards.deal(hand_size)
+  @spec create_hand(integer) :: {[{String.t(), String.t()}], [{String.t(), String.t()}]}
+  def create_hand(hand_size \\ 9), do: Cards.create_deck() |> Cards.deal(hand_size)
 end
